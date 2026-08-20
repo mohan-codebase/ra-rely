@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-rely-navy: #0B1B4D;
+    --color-advisory-gold: #C4A35A;
+    --color-warm-ivory: #F5F2EA;
+    --color-cloud-grey: #F4F6F9;
+    --color-charcoal: #263247;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white text-charcoal font-body text-[16px] leading-relaxed;
+    color: #263247;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight text-rely-navy font-semibold;
+  }
+
+  ::selection {
+    background-color: #0B1B4D;
+    color: #F5F2EA;
+  }
+
+  :focus-visible {
+    outline: 2px solid #C4A35A;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .gold-rule {
+    height: 1px;
+    background: linear-gradient(90deg, #C4A35A 0%, rgba(196, 163, 90, 0.3) 100%);
+  }
+
+  .gold-rule-centered {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(196, 163, 90, 0.1) 0%, #C4A35A 50%, rgba(196, 163, 90, 0.1) 100%);
+  }
+
+  /* Animated gradient shimmer for premium feel */
+  .shimmer-bg {
+    background: linear-gradient(
+      110deg,
+      rgba(196, 163, 90, 0) 0%,
+      rgba(196, 163, 90, 0.08) 20%,
+      rgba(196, 163, 90, 0.15) 50%,
+      rgba(196, 163, 90, 0.08) 80%,
+      rgba(196, 163, 90, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.5s linear infinite;
+  }
+
+  /* Glass morphism utility */
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .glass-navy {
+    background: rgba(11, 27, 77, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Architectural grid background patterns */
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(11, 27, 77, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(11, 27, 77, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .grid-pattern-gold {
+    background-image:
+      linear-gradient(rgba(196, 163, 90, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196, 163, 90, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Gradient text */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #C4A35A 0%, #D8BD7E 50%, #A6863D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Dot pattern overlay */
+  .dot-pattern {
+    background-image: radial-gradient(rgba(196, 163, 90, 0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+/* Custom scrollbar for clean luxury feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F6F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #0B1B4D;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C4A35A;
+}
+
+/* Smooth transitions for prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
