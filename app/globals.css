@@ -124,6 +124,18 @@
   background: #C4A35A;
 }
 
+/* Custom Cursor - Native cursor is preserved so both system cursor and custom follower are visible */
+@media (hover: hover) and (pointer: fine) {
+  /* Keep standard pointer behavior on interactive elements */
+  a, button, [role="button"], [data-cursor-pointer], .cursor-pointer {
+    cursor: pointer;
+  }
+
+  input, textarea, select, [contenteditable="true"] {
+    cursor: text;
+  }
+}
+
 /* Smooth transitions for prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

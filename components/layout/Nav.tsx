@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +15,7 @@ import {
   MobileNavHeader,
   MobileNavToggle,
   MobileNavMenu,
+  useNavbar,
 } from "@/components/ui/resizable-navbar";
 
 const navLinks = [
@@ -56,18 +57,55 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
-export const Nav: React.FC<{ visible?: boolean }> = ({ visible = false }) => {
+function NavContent() {
+  const { visible } = useNavbar();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const pathname = usePathname();
 
+  // Close dropdowns and menus on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setActiveDropdown(null);
+    setHoveredIndex(null);
+  }, [pathname]);
+
+  // Close desktop dropdowns on scroll so they don't hover awkwardly over scrolling content
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      if (Math.abs(window.scrollY - lastScrollY) > 8) {
+        setActiveDropdown(null);
+        setHoveredIndex(null);
+      }
+      lastScrollY = window.scrollY;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Lock body scroll and pause Lenis when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      if (window.__lenis) window.__lenis.stop();
+    } else {
+      document.body.style.overflow = "";
+      if (window.__lenis) window.__lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      if (window.__lenis) window.__lenis.start();
+    };
+  }, [isMobileMenuOpen]);
+
   return (
-    <Navbar>
+    <>
       {/* Desktop Navigation */}
-      <NavBody className="gap-4 lg:gap-8">
+      <NavBody>
         {/* Brand Logo */}
-        <div className="flex items-center shrink-0">
+        <div className="flex items-center shrink-0 pr-2 sm:pr-3">
           <Logo size={visible ? "sm" : "md"} showTagline={!visible} />
         </div>
 
@@ -144,7 +182,7 @@ export const Nav: React.FC<{ visible?: boolean }> = ({ visible = false }) => {
                           duration: 0.2,
                           ease: [0.25, 0.1, 0.25, 1],
                         }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[360px] z-50"
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[360px] z-50 pointer-events-auto"
                       >
                         <div className="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-float-lg border border-cloud-grey-border overflow-hidden p-2">
                           <div className="grid gap-0.5">
@@ -158,7 +196,10 @@ export const Nav: React.FC<{ visible?: boolean }> = ({ visible = false }) => {
                                     ? "bg-warm-ivory/60"
                                     : "hover:bg-cloud-grey/80",
                                 )}
-                                onClick={() => setActiveDropdown(null)}
+                                onClick={() => {
+                                  setActiveDropdown(null);
+                                  setHoveredIndex(null);
+                                }}
                               >
                                 <div className="flex items-center justify-between">
                                   <div className="text-sm font-heading font-semibold text-rely-navy group-hover/sub:text-advisory-gold-dark transition-colors">
@@ -190,7 +231,9 @@ export const Nav: React.FC<{ visible?: boolean }> = ({ visible = false }) => {
             size="sm"
             className={cn(
               "rounded-full font-heading font-semibold tracking-wider uppercase transition-all duration-300 shadow-subtle hover:shadow-glow-gold whitespace-nowrap",
-              visible ? "text-[11px] px-4 py-2" : "text-xs px-5 py-2.5",
+              visible
+                ? "text-[11px] px-3.5 sm:px-4 py-1.5"
+                : "text-xs px-5 py-2.5",
             )}
           >
             Book a Review
@@ -201,7 +244,7 @@ export const Nav: React.FC<{ visible?: boolean }> = ({ visible = false }) => {
       {/* Mobile Navigation */}
       <MobileNav>
         <MobileNavHeader>
-          <div className="flex items-center">
+          <div className="flex items-center pr-2">
             <Logo size="sm" showTagline={false} />
           </div>
           <div className="flex items-center gap-2">
@@ -278,6 +321,14 @@ export const Nav: React.FC<{ visible?: boolean }> = ({ visible = false }) => {
           </div>
         </MobileNavMenu>
       </MobileNav>
+    </>
+  );
+}
+
+export const Nav: React.FC = () => {
+  return (
+    <Navbar>
+      <NavContent />
     </Navbar>
   );
 };

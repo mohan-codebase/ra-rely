@@ -30,6 +30,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
     <motion.div
       variants={fadeInUp}
       whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
+      data-cursor-text="EXPLORE"
       className={cn(
         'group relative bg-white border border-cloud-grey-border rounded-xl p-7 sm:p-8 flex flex-col justify-between hover:border-advisory-gold/60 hover:shadow-float transition-all duration-400',
         className

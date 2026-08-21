@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 interface LogoProps {
-  variant?: "light" | "dark"; // 'light' is for dark backgrounds (footer), 'dark' is for light backgrounds (header)
+  variant?: "light" | "dark"; // 'light' is for dark backgrounds (footer), 'dark' is for light backgrounds (header/navbar)
   size?: "sm" | "md" | "lg";
   showTagline?: boolean;
   className?: string;
@@ -15,115 +15,54 @@ export const Logo: React.FC<LogoProps> = ({
   className = "",
 }) => {
   const isLight = variant === "light";
-  const navyColor = isLight ? "#FFFFFF" : "#0B1B4D";
-  const goldColor = "#C4A35A";
-  const subtitleColor = isLight ? "#D8BD7E" : "#263247";
-
   const isSmall = size === "sm";
-  const svgSize = isSmall ? 28 : size === "lg" ? 48 : 42;
+  const isLarge = size === "lg";
+
+  // Sizing for footer (light variant on dark bg)
+  const lightHeightClass = isSmall
+    ? "h-9 sm:h-10"
+    : isLarge
+      ? "h-16 sm:h-20"
+      : "h-12 sm:h-15";
+
+  // Sizing for navbar (dark variant on light bg)
+  const darkHeightClass = isSmall
+    ? "h-6 sm:h-7"
+    : isLarge
+      ? "h-9 sm:h-10"
+      : "h-7 sm:h-8";
+
+  const logoSrc = isLight
+    ? "/assets/logos/logo.png"
+    : "/assets/logos/nav-logo.svg";
+
+  if (isLight) {
+    return (
+      <Link
+        href="/"
+        className={`inline-flex items-center justify-center rounded-2xl bg-white/95 p-3 sm:p-3.5 shadow-subtle border border-white/20 hover:bg-white hover:shadow-glow-gold transition-all duration-300 group shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold ${className}`}
+        aria-label="Rely Advisory Group - Accounting. Strategy. Simplified."
+      >
+        <img
+          src="/assets/logos/logo.png"
+          alt="Rely Advisory Group"
+          className={`${lightHeightClass} w-auto object-contain transition-transform duration-300 group-hover:scale-105`}
+        />
+      </Link>
+    );
+  }
 
   return (
     <Link
       href="/"
-      className={`inline-flex items-center gap-2 sm:gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold shrink-0 ${className}`}
-      aria-label="Rely Advisory Group logo, Accounting. Strategy. Simplified."
+      className={`inline-flex items-center justify-center py-1 px-1.5 sm:px-2 rounded-lg group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold shrink-0 transition-transform duration-300 ${className}`}
+      aria-label="Rely Advisory Group - Accounting. Strategy. Simplified."
     >
-      {/* Monogram Mark */}
-      <svg
-        width={svgSize}
-        height={svgSize}
-        viewBox="0 0 48 48"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="shrink-0 transition-transform duration-300 group-hover:scale-105"
-        role="img"
-        aria-hidden="true"
-      >
-        {/* Navy Monogram Frame */}
-        <rect
-          x="3"
-          y="3"
-          width="42"
-          height="42"
-          rx="3"
-          fill={isLight ? "#0F2360" : "#0B1B4D"}
-          stroke={goldColor}
-          strokeWidth="1.5"
-        />
-        {/* Modern Stylized 'R' with upward precision gold angle */}
-        <path
-          d="M15 14H24.5C28 14 30.5 16 30.5 19.5C30.5 22.5 28.5 24.5 25.5 25L32 34H26.5L20.8 25.5H19.5V34H15V14Z"
-          fill="#FFFFFF"
-        />
-        <path
-          d="M19.5 18V21.8H24.2C25.8 21.8 26.8 21 26.8 19.9C26.8 18.8 25.8 18 24.2 18H19.5Z"
-          fill={isLight ? "#0F2360" : "#0B1B4D"}
-        />
-        {/* Ascending Gold Angle / Arrow accentuating upward growth & precision */}
-        <path
-          d="M27 12L34 12L34 19L31.5 16.5L25.5 22.5L23.5 20.5L29.5 14.5L27 12Z"
-          fill={goldColor}
-        />
-        {/* Fine gold baseline rule */}
-        <line
-          x1="14"
-          y1="36"
-          x2="34"
-          y2="36"
-          stroke={goldColor}
-          strokeWidth="1"
-        />
-      </svg>
-
-      {/* Brand Wordmark & Tagline */}
-      <div className="flex flex-col">
-        <div className="flex items-baseline gap-1 sm:gap-1.5 leading-none">
-          <span
-            className={`font-heading font-bold tracking-tight transition-all duration-300 ${
-              isSmall ? "text-sm sm:text-base" : "text-xl"
-            }`}
-            style={{ color: navyColor }}
-          >
-            RELY
-          </span>
-          <span
-            className={`font-heading font-semibold tracking-widest uppercase transition-all duration-300 ${
-              isSmall ? "text-[9px] sm:text-[10px] hidden xs:inline" : "text-sm"
-            }`}
-            style={{ color: goldColor }}
-          >
-            ADVISORY GROUP
-          </span>
-        </div>
-        {showTagline && !isSmall && (
-          <div className="flex items-center gap-1.5 mt-1">
-            <span
-              className="text-[9.5px] uppercase tracking-[0.16em] font-medium"
-              style={{ color: subtitleColor }}
-            >
-              Accounting
-            </span>
-            <span className="text-[9px]" style={{ color: goldColor }}>
-              •
-            </span>
-            <span
-              className="text-[9.5px] uppercase tracking-[0.16em] font-medium"
-              style={{ color: subtitleColor }}
-            >
-              Strategy
-            </span>
-            <span className="text-[9px]" style={{ color: goldColor }}>
-              •
-            </span>
-            <span
-              className="text-[9.5px] uppercase tracking-[0.16em] font-medium"
-              style={{ color: subtitleColor }}
-            >
-              Simplified
-            </span>
-          </div>
-        )}
-      </div>
+      <img
+        src={logoSrc}
+        alt="Rely Advisory Group"
+        className={`${darkHeightClass} w-auto object-contain transition-all duration-300 group-hover:scale-105`}
+      />
     </Link>
   );
 };

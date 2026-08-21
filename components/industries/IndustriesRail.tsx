@@ -48,6 +48,7 @@ export const IndustriesRail: React.FC = () => {
         return (
           <article
             key={industry.title}
+            data-cursor-text="DISCOVER"
             className="shrink-0 w-[82vw] sm:w-[420px] lg:w-[440px] snap-center bg-white border border-cloud-grey-border rounded-3xl p-8 sm:p-9 shadow-subtle hover:shadow-card-hover hover:border-advisory-gold/40 transition-all duration-300"
           >
             <div className="flex items-start justify-between mb-6">

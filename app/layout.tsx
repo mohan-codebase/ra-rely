@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Preloader } from "@/components/ui/Preloader";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -51,12 +52,21 @@ export const metadata: Metadata = {
     title: "Finance operations and advisory support | Rely Advisory Group",
     description:
       "Improve accounts payable, receivables, finance processes and reporting with practical support for growing Australian businesses.",
+    images: [
+      {
+        url: "/assets/og/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Rely Advisory Group - Finance operations and advisory support",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Finance operations and advisory support | Rely Advisory Group",
     description:
       "Improve accounts payable, receivables, finance processes and reporting with practical support for growing Australian businesses.",
+    images: ["/assets/og/og-image.svg"],
   },
   robots: {
     index: true,
@@ -77,6 +87,9 @@ export default function RootLayout({
 
         {/* Branded Preloader — shows on first session visit */}
         <Preloader />
+
+        {/* Ultra-luxury magnetic custom cursor with precision follower */}
+        <CustomCursor />
 
         {/* Gold scroll progress rail + back-to-top pill */}
         <ScrollProgress />
