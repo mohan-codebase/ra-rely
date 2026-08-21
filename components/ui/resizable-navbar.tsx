@@ -8,7 +8,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -52,8 +52,17 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   const { scrollY } = useScroll();
   const [visible, setVisible] = useState<boolean>(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > 30);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 40) {
+    if (latest > 30) {
       setVisible(true);
     } else {
       setVisible(false);
