@@ -36,16 +36,16 @@ export default function HealthCheckPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
 
-        <div className="bg-white border border-cloud-grey-border rounded-xs p-8 shadow-card space-y-8 my-8">
+        <div className="bg-white border border-cloud-grey-border rounded-2xl p-8 shadow-card space-y-8 my-8">
           <div className="space-y-6">
             {questions.map((q, idx) => (
-              <div key={idx} className="p-4 bg-cloud-grey/60 rounded-xs border border-cloud-grey-border/80">
+              <div key={idx} className="p-4 bg-cloud-grey/60 rounded-2xl border border-cloud-grey-border/80">
                 <p className="font-heading font-semibold text-sm sm:text-base text-rely-navy mb-3">
                   {q}
                 </p>
                 <div className="flex flex-wrap gap-2 text-xs">
                   {['Always', 'Usually', 'Sometimes', 'Rarely', 'Not sure'].map((opt) => (
-                    <label key={opt} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-cloud-grey-border rounded-xs cursor-pointer hover:border-advisory-gold">
+                    <label key={opt} className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-cloud-grey-border rounded-full cursor-pointer hover:border-advisory-gold hover:bg-warm-ivory/50 transition-colors">
                       <input type="radio" name={`q_${idx}`} className="text-rely-navy focus:ring-advisory-gold" />
                       <span>{opt}</span>
                     </label>
@@ -57,7 +57,7 @@ export default function HealthCheckPage() {
 
           <div className="pt-4 border-t border-cloud-grey flex justify-center">
             <Button variant="primary" size="lg">
-              Receive My Result and Recommendations <ArrowRight className="w-4 h-4 ml-2" />
+              Receive My Result and Recommendations <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>

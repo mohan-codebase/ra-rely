@@ -24,7 +24,7 @@ export default function BookReviewPage() {
 
 
         {/* Sensitive data warning per content doc */}
-        <div className="mb-8 p-4 bg-warm-ivory border-l-4 border-advisory-gold rounded-xs flex items-start gap-3 text-xs text-charcoal">
+        <div className="mb-8 p-4 bg-warm-ivory border-l-4 border-advisory-gold rounded-2xl flex items-start gap-3 text-xs text-charcoal">
           <AlertTriangle className="w-5 h-5 text-advisory-gold-dark shrink-0 mt-0.5" />
           <div>
             <strong className="font-semibold text-rely-navy block mb-0.5">Protect sensitive information:</strong>
@@ -33,7 +33,7 @@ export default function BookReviewPage() {
         </div>
 
         {/* Booking Form Card */}
-        <div className="bg-white border border-cloud-grey-border rounded-xs p-8 shadow-card">
+        <div className="bg-white border border-cloud-grey-border rounded-2xl p-8 shadow-card">
           <form className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
@@ -44,7 +44,7 @@ export default function BookReviewPage() {
                   type="text"
                   required
                   placeholder="e.g. Jane Smith"
-                  className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
+                  className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
                 />
               </div>
               <div>
@@ -55,7 +55,7 @@ export default function BookReviewPage() {
                   type="text"
                   required
                   placeholder="e.g. Acme Services Pty Ltd"
-                  className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
+                  className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
                 />
               </div>
             </div>
@@ -69,7 +69,7 @@ export default function BookReviewPage() {
                   type="email"
                   required
                   placeholder="jane@company.com.au"
-                  className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
+                  className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
                 />
               </div>
               <div>
@@ -79,7 +79,7 @@ export default function BookReviewPage() {
                 <input
                   type="tel"
                   placeholder="0400 000 000"
-                  className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
+                  className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
                 />
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function BookReviewPage() {
                 <label className="block text-xs font-heading font-semibold uppercase tracking-wider text-rely-navy mb-2">
                   Number of Employees
                 </label>
-                <select className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none bg-white">
+                <select className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none bg-white">
                   <option value="">Select range...</option>
                   <option value="1-10">1 – 10 employees</option>
                   <option value="11-50">11 – 50 employees</option>
@@ -101,7 +101,7 @@ export default function BookReviewPage() {
                 <label className="block text-xs font-heading font-semibold uppercase tracking-wider text-rely-navy mb-2">
                   Primary Accounting System
                 </label>
-                <select className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none bg-white">
+                <select className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none bg-white">
                   <option value="">Select system...</option>
                   <option value="Xero">Xero</option>
                   <option value="MYOB">MYOB</option>
@@ -115,7 +115,7 @@ export default function BookReviewPage() {
               <label className="block text-xs font-heading font-semibold uppercase tracking-wider text-rely-navy mb-2">
                 Primary Area of Interest
               </label>
-              <select className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none bg-white">
+              <select className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none bg-white">
                 <option value="ap">Accounts Payable Support</option>
                 <option value="ar">Accounts Receivable & Cash Flow</option>
                 <option value="process">Finance Process Improvement</option>
@@ -132,7 +132,7 @@ export default function BookReviewPage() {
               <textarea
                 rows={3}
                 placeholder="Briefly describe what you are looking to streamline or improve..."
-                className="w-full px-4 py-2.5 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none"
+                className="w-full px-5 py-3.5 text-sm rounded-2xl border border-cloud-grey-border focus:border-advisory-gold focus:ring-1 focus:ring-advisory-gold outline-none resize-y"
               />
             </div>
 

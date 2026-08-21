@@ -14,6 +14,8 @@ import { CTASection } from '@/components/ui/CTASection';
 import { Button } from '@/components/ui/Button';
 import { HomeSolutionsGrid } from '@/components/home/HomeSolutionsGrid';
 import { HomeProcessSection } from '@/components/home/HomeProcessSection';
+import { HomeManifesto } from '@/components/home/HomeManifesto';
+import { SectionTransition } from '@/components/ui/Reveal';
 import {
   ArrowRight,
 } from 'lucide-react';
@@ -91,7 +93,7 @@ export default function HomePage() {
       <TrustStrip />
 
       {/* 3. Problem Section */}
-      <section className="py-20 lg:py-28 bg-white" aria-labelledby="problems-heading">
+      <SectionTransition className="py-20 lg:py-28 bg-white" aria-labelledby="problems-heading">
         <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="OPERATIONAL CHALLENGES"
@@ -112,10 +114,10 @@ export default function HomePage() {
             />
           </div>
         </div>
-      </section>
+      </SectionTransition>
 
       {/* 4. Solutions Overview */}
-      <section
+      <SectionTransition
         className="py-20 lg:py-28 bg-cloud-grey/50 border-t border-cloud-grey-border"
         aria-labelledby="solutions-heading"
       >
@@ -131,17 +133,20 @@ export default function HomePage() {
             <div className="mt-6 md:mt-0 shrink-0">
               <Button href="/solutions" variant="secondary" size="md" className="group">
                 View all solutions
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
           </div>
 
           <HomeSolutionsGrid />
         </div>
-      </section>
+      </SectionTransition>
+
+      {/* 4b. Editorial breather — word-by-word scroll reveal */}
+      <HomeManifesto />
 
       {/* 5. Value Section */}
-      <section className="py-20 lg:py-28 bg-white" aria-labelledby="benefits-heading">
+      <SectionTransition className="py-20 lg:py-28 bg-white" aria-labelledby="benefits-heading">
         <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="COMMERCIAL OUTCOMES"
@@ -152,13 +157,13 @@ export default function HomePage() {
 
           <BenefitsList />
         </div>
-      </section>
+      </SectionTransition>
 
       {/* 6. How Rely Works */}
       <HomeProcessSection />
 
       {/* 7. Why Businesses Choose Rely */}
-      <section className="py-20 lg:py-28 bg-white" aria-labelledby="why-choose-heading">
+      <SectionTransition className="py-20 lg:py-28 bg-white" aria-labelledby="why-choose-heading">
         <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="THE RELY DIFFERENCE"
@@ -169,7 +174,7 @@ export default function HomePage() {
 
           <WhyChooseUs />
         </div>
-      </section>
+      </SectionTransition>
 
       {/* 8. Closing CTA Block */}
       <CTASection

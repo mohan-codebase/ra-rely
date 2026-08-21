@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { CTASection } from '@/components/ui/CTASection';
 import { BookOpen, FileCheck2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { Reveal } from '@/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Finance operations insights for Australian SMEs | Rely',
@@ -38,7 +39,15 @@ export default function InsightsPage() {
           <h2 className="text-xl font-heading font-bold text-rely-navy mb-6">Featured Articles & Guides</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((art, idx) => (
-              <div key={idx} className="bg-white border border-cloud-grey-border p-6 rounded-xs hover:border-advisory-gold hover:shadow-card transition-all flex flex-col justify-between">
+              <Reveal
+                key={idx}
+                delay={(idx % 3) * 0.1}
+                distance={28}
+                scale
+                blur
+                start="top 90%"
+                className="bg-white border border-cloud-grey-border p-6 rounded-2xl hover:border-advisory-gold hover:shadow-card transition-all flex flex-col justify-between"
+              >
                 <div>
                   <span className="text-xs font-mono font-semibold text-advisory-gold uppercase mb-2 block">Article 0{idx + 1}</span>
                   <h3 className="font-heading font-bold text-base text-rely-navy mb-4">{art}</h3>
@@ -48,7 +57,7 @@ export default function InsightsPage() {
                     Read Article <ArrowRight className="w-3.5 h-3.5 text-advisory-gold" />
                   </span>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>

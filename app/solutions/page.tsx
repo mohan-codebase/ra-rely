@@ -61,9 +61,9 @@ export default function SolutionsPage() {
             return (
               <div
                 key={item.title}
-                className="bg-white border border-cloud-grey-border p-8 rounded-xs hover:border-advisory-gold hover:shadow-card transition-all"
+                className="bg-white border border-cloud-grey-border p-8 rounded-2xl hover:border-advisory-gold hover:shadow-card transition-all"
               >
-                <div className="w-12 h-12 rounded-xs bg-rely-navy text-white flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-rely-navy text-white flex items-center justify-center mb-6">
                   <Icon className="w-6 h-6" />
                 </div>
                 <h2 className="text-xl font-heading font-bold text-rely-navy mb-3">

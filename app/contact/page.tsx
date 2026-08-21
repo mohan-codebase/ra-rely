@@ -25,7 +25,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 my-12">
           {/* Left Column: Contact info */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-warm-ivory p-6 rounded-xs border border-advisory-gold/40 space-y-4">
+            <div className="bg-warm-ivory p-6 rounded-2xl border border-advisory-gold/40 space-y-4">
               <h3 className="font-heading font-bold text-lg text-rely-navy">Direct Contact</h3>
               
               <div className="space-y-3 text-sm text-charcoal">
@@ -56,14 +56,14 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="p-4 bg-cloud-grey rounded-xs border border-cloud-grey-border text-xs text-charcoal-muted">
+            <div className="p-4 bg-cloud-grey rounded-2xl border border-cloud-grey-border text-xs text-charcoal-muted">
               <ShieldCheck className="w-4 h-4 text-rely-navy mb-1" />
               <strong>Confidentiality Notice:</strong> General enquiries do not require financial statements. We establish secure sharing links for active engagements.
             </div>
           </div>
 
           {/* Right Column: Contact form */}
-          <div className="lg:col-span-7 bg-white p-8 rounded-xs border border-cloud-grey-border shadow-subtle">
+          <div className="lg:col-span-7 bg-white p-8 rounded-2xl border border-cloud-grey-border shadow-subtle">
             <form className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
@@ -73,7 +73,7 @@ export default function ContactPage() {
                   <input
                     type="text"
                     required
-                    className="w-full px-3.5 py-2 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold outline-none"
+                    className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold outline-none"
                   />
                 </div>
                 <div>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                   <input
                     type="text"
                     required
-                    className="w-full px-3.5 py-2 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold outline-none"
+                    className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold outline-none"
                   />
                 </div>
               </div>
@@ -96,7 +96,7 @@ export default function ContactPage() {
                   <input
                     type="email"
                     required
-                    className="w-full px-3.5 py-2 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold outline-none"
+                    className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold outline-none"
                   />
                 </div>
                 <div>
@@ -105,7 +105,7 @@ export default function ContactPage() {
                   </label>
                   <input
                     type="tel"
-                    className="w-full px-3.5 py-2 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold outline-none"
+                    className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold outline-none"
                   />
                 </div>
               </div>
@@ -114,7 +114,7 @@ export default function ContactPage() {
                 <label className="block text-xs font-heading font-semibold uppercase text-rely-navy mb-1">
                   Enquiry Type
                 </label>
-                <select className="w-full px-3.5 py-2 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold outline-none bg-white">
+                <select className="w-full px-5 py-2.5 text-sm rounded-full border border-cloud-grey-border focus:border-advisory-gold outline-none bg-white">
                   <option>General enquiry</option>
                   <option>Accounts Payable enquiry</option>
                   <option>Accounts Receivable enquiry</option>
@@ -132,7 +132,7 @@ export default function ContactPage() {
                   rows={4}
                   required
                   placeholder="How can we assist you?"
-                  className="w-full px-3.5 py-2 text-sm rounded-xs border border-cloud-grey-border focus:border-advisory-gold outline-none"
+                  className="w-full px-5 py-3.5 text-sm rounded-2xl border border-cloud-grey-border focus:border-advisory-gold outline-none resize-y"
                 />
               </div>
 

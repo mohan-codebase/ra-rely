@@ -51,7 +51,7 @@ export const CTASection: React.FC<CTASectionProps> = ({
         {/* Eyebrow badge */}
         <motion.div
           variants={fadeInUp}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/8 border border-advisory-gold/30 text-advisory-gold text-xs uppercase tracking-widest font-heading font-semibold mb-7 backdrop-blur-sm"
+          className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/8 border border-advisory-gold/30 text-advisory-gold text-xs uppercase tracking-widest font-heading font-semibold mb-7 backdrop-blur-sm"
         >
           <ShieldCheck className="w-3.5 h-3.5" />
           Finance Operations Review
@@ -98,14 +98,14 @@ export const CTASection: React.FC<CTASectionProps> = ({
             size="lg"
             className="w-full sm:w-auto shadow-premium text-base font-bold hover:shadow-glow-gold transition-shadow duration-300"
           >
-            <Calendar className="w-4 h-4 mr-2" />
+            <Calendar className="w-4 h-4" />
             {buttonText}
           </Button>
 
           {showHealthCheckAlt && (
             <Link
               href="/finance-health-check"
-              className="inline-flex items-center justify-center text-sm font-semibold text-white/85 hover:text-advisory-gold px-6 py-3.5 border border-white/20 hover:border-advisory-gold rounded-lg transition-all duration-300 w-full sm:w-auto group"
+              className="inline-flex items-center justify-center text-sm font-semibold text-white/85 hover:text-advisory-gold px-7 py-3.5 border border-white/20 hover:border-advisory-gold rounded-full transition-all duration-300 w-full sm:w-auto group"
             >
               <HelpCircle className="w-4 h-4 mr-2 text-advisory-gold" />
               Take 3-Min Health Check First

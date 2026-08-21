@@ -1,0 +1,583 @@
+/* =================================================================
+   Design tokens
+   Scoped to the header so they never leak into the rest of the app.
+   ================================================================= */
+
+/* All three roots (curtain, header, drawer) are siblings in the DOM, so the
+   tokens must be declared on each — a definition on .wrap alone would not
+   reach the curtain or the drawer, and every var() in them would fail. */
+.wrap,
+.curtain,
+.sheet {
+  --bg: #ffffff;
+  --ink: #0b1b4d;
+  --ink-soft: #4a5568;
+  --ink-media: #f5f3ee; /* spec value, used over dark heroes */
+  --hairline: rgba(11, 27, 77, 0.1);
+  --accent: #c4a35a;
+  --pad: 1.5rem;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pill-max: 1040px;
+}
+
+.wrap {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  /* The wrap spans the full width but the pill does not — without this the
+     empty area beside the pill would swallow clicks meant for the page. */
+  pointer-events: none;
+}
+
+/* =================================================================
+   Bar — two-stage morph
+   ================================================================= */
+
+.inner {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.8rem var(--pad);
+  color: var(--ink);
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  transition:
+    max-width 0.5s var(--ease),
+    margin-top 0.5s var(--ease),
+    border-radius 0.5s var(--ease),
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Stage 0 over a dark hero or video: light ink, still transparent. */
+.overMedia.stage0 .inner {
+  color: var(--ink-media);
+}
+
+/* Stage 1 — frosted glass, full width. */
+.stage1 .inner,
+.stage2 .inner,
+.menuOpen .inner {
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  border-color: var(--hairline);
+}
+
+/* Stage 2 — floating pill capsule. */
+.stage2 .inner {
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  margin-top: 14px;
+  padding: 0.45rem 0.6rem 0.45rem 1.2rem;
+  border-radius: 999px;
+  gap: 1.25rem;
+  box-shadow:
+    0 1px 2px rgba(11, 27, 77, 0.06),
+    0 8px 24px rgba(11, 27, 77, 0.1),
+    0 24px 48px rgba(11, 27, 77, 0.06);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+/* =================================================================
+   Desktop links
+   ================================================================= */
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.linkItem {
+  position: relative;
+}
+
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 999px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.stage2 .link {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+}
+
+.link:hover {
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+
+.linkActive {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor;
+  opacity: 0.55;
+  transition: transform 0.25s var(--ease);
+}
+
+.link[aria-expanded="true"] .caret {
+  transform: rotate(180deg);
+}
+
+.cta {
+  flex-shrink: 0;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--bg);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.stage2 .cta {
+  padding: 0.48rem 1.15rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Design system: navy background, white text, gold hover. */
+.cta:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* =================================================================
+   Curtain
+   ================================================================= */
+
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  background: color-mix(in srgb, #0b1b4d 12%, transparent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  transition: opacity 0.35s ease;
+}
+
+.curtainOn {
+  opacity: 1;
+}
+
+/* =================================================================
+   Mega-menu
+   ================================================================= */
+
+.mega {
+  pointer-events: auto;
+  overflow: hidden;
+  height: 0;
+  /* transition-duration is supplied inline, scaled to the distance travelled */
+  transition-property: height;
+  transition-timing-function: var(--ease);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  /* Transparent while closed: a coloured border would still paint its 1px
+     even at height 0, leaving a stray hairline across the viewport. */
+  border-bottom: 1px solid transparent;
+}
+
+.menuOpen .mega {
+  border-bottom-color: var(--hairline);
+}
+
+/* Pill mode — the dropdown becomes a floating card under the capsule. */
+.stage2 .mega {
+  max-width: var(--pill-max);
+  margin: 10px auto 0;
+  border: 1px solid transparent;
+  border-radius: 20px;
+}
+
+.stage2.menuOpen .mega {
+  border-color: var(--hairline);
+  box-shadow:
+    0 8px 24px rgba(11, 27, 77, 0.1),
+    0 24px 48px rgba(11, 27, 77, 0.08);
+}
+
+.megaInner {
+  position: relative;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem var(--pad) 2.25rem;
+  opacity: 0;
+  /* visibility (not display) keeps the panel laid out so offsetHeight is real */
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s;
+}
+
+.panelActive {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 2.5rem;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.stage2 .panelGrid {
+  gap: 1.75rem;
+}
+
+/* ---- Staggered choreography ---- */
+
+.heroTitle,
+.colTitle,
+.heroLink,
+.colLink {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s var(--ease);
+}
+
+.panelActive .heroTitle,
+.panelActive .colTitle {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.08s;
+}
+
+.panelActive .heroLink,
+.panelActive .colLink {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+
+/* ---- Column 1: elevated hero column ---- */
+
+.heroCol {
+  padding-right: 2rem;
+  border-right: 1px solid var(--hairline);
+}
+
+.heroTitle {
+  margin: 0 0 0.85rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.heroLink {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.heroLink::after {
+  content: "→";
+  margin-left: 0.4rem;
+  transition: transform 0.25s var(--ease);
+}
+
+.heroLink:hover::after {
+  transform: translateX(4px);
+}
+
+/* ---- Secondary columns ---- */
+
+.colTitle {
+  margin: 0 0 0.9rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+
+.colList {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colLink {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.colLink:hover {
+  color: var(--accent);
+}
+
+/* =================================================================
+   Mobile drawer
+   ================================================================= */
+
+.burger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  flex-shrink: 0;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.burgerBar {
+  position: absolute;
+  left: 50%;
+  width: 20px;
+  height: 1.5px;
+  margin-left: -10px;
+  background: currentColor;
+  border-radius: 2px;
+  transition:
+    transform 0.35s var(--ease),
+    opacity 0.2s ease;
+}
+
+.burgerBar:nth-child(1) {
+  top: 19px;
+}
+.burgerBar:nth-child(2) {
+  top: 25px;
+}
+
+.burgerOpen .burgerBar:nth-child(1) {
+  transform: translateY(3px) rotate(45deg);
+}
+.burgerOpen .burgerBar:nth-child(2) {
+  transform: translateY(-3px) rotate(-45deg);
+}
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  padding: 6rem var(--pad) 3rem;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  transition:
+    opacity 0.35s ease,
+    visibility 0.35s;
+  visibility: hidden;
+}
+
+.sheetOpen {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.sheetList {
+  display: grid;
+  gap: 1.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheetItem {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s var(--ease);
+}
+
+.sheetOpen .sheetItem {
+  opacity: 1;
+  transform: none;
+}
+
+.sheetLink {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sheetLinkActive {
+  color: var(--accent);
+}
+
+.sheetSubList {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.75rem 0 0;
+  padding: 0 0 0 1rem;
+  list-style: none;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.sheetSubLink {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.sheetCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--ink);
+  border-radius: 999px;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s var(--ease);
+}
+
+.sheetOpen .sheetCta {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 900px) {
+  .links,
+  .cta {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+    margin-left: auto;
+  }
+
+  .mega {
+    display: none;
+  }
+
+  .panelGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =================================================================
+   Focus visibility (WCAG 2.2)
+   ================================================================= */
+
+.brand a:focus-visible,
+.link:focus-visible,
+.cta:focus-visible,
+.burger:focus-visible,
+.heroLink:focus-visible,
+.colLink:focus-visible,
+.sheetLink:focus-visible,
+.sheetSubLink:focus-visible,
+.sheetCta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* =================================================================
+   Reduced motion
+   ================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .inner,
+  .mega,
+  .panel,
+  .curtain,
+  .caret,
+  .burgerBar,
+  .sheet,
+  .sheetItem,
+  .sheetCta,
+  .heroTitle,
+  .colTitle,
+  .heroLink,
+  .colLink,
+  .heroLink::after {
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+}

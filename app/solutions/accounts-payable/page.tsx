@@ -23,17 +23,17 @@ export default function AccountsPayablePage() {
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
 
 
-        <div className="bg-cloud-grey p-8 rounded-xs border border-cloud-grey-border mb-12">
+        <div className="bg-cloud-grey p-8 rounded-2xl border border-cloud-grey-border mb-12">
           <h2 className="text-lg font-heading font-bold text-rely-navy mb-4">
             Controls built into delivery
           </h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-charcoal">
-            <li className="p-3 bg-white rounded-xs border border-cloud-grey-border">✓ Documented approval authorities</li>
-            <li className="p-3 bg-white rounded-xs border border-cloud-grey-border">✓ Separation between preparation and client authorisation</li>
-            <li className="p-3 bg-white rounded-xs border border-cloud-grey-border">✓ Clear audit trail and supporting documentation</li>
-            <li className="p-3 bg-white rounded-xs border border-cloud-grey-border">✓ Exception and duplicate checks</li>
-            <li className="p-3 bg-white rounded-xs border border-cloud-grey-border">✓ Defined escalation points</li>
-            <li className="p-3 bg-white rounded-xs border border-cloud-grey-border">✓ Regular reconciliation and service review</li>
+            <li className="p-3 bg-white rounded-2xl border border-cloud-grey-border">✓ Documented approval authorities</li>
+            <li className="p-3 bg-white rounded-2xl border border-cloud-grey-border">✓ Separation between preparation and client authorisation</li>
+            <li className="p-3 bg-white rounded-2xl border border-cloud-grey-border">✓ Clear audit trail and supporting documentation</li>
+            <li className="p-3 bg-white rounded-2xl border border-cloud-grey-border">✓ Exception and duplicate checks</li>
+            <li className="p-3 bg-white rounded-2xl border border-cloud-grey-border">✓ Defined escalation points</li>
+            <li className="p-3 bg-white rounded-2xl border border-cloud-grey-border">✓ Regular reconciliation and service review</li>
           </ul>
         </div>
       </div>

@@ -1,31 +1,51 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Logo } from '@/components/ui/Logo';
-import { Button } from '@/components/ui/Button';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Logo } from "@/components/ui/Logo";
+import { Button } from "@/components/ui/Button";
 
 const navLinks = [
-  { name: 'Home', href: '/' },
+  { name: "Home", href: "/" },
   {
-    name: 'Solutions',
-    href: '/solutions',
+    name: "Solutions",
+    href: "/solutions",
     submenu: [
-      { name: 'All Solutions', href: '/solutions', desc: 'Custom finance operational support designed to scale.' },
-      { name: 'Accounts Payable', href: '/solutions/accounts-payable', desc: 'Controlled supplier invoice processing and approvals.' },
-      { name: 'Accounts Receivable', href: '/solutions/accounts-receivable', desc: 'Disciplined billing, debtor follow-up, and cash visibility.' },
-      { name: 'Process Improvement', href: '/solutions/process-improvement', desc: 'Workflow documentation, bottleneck removal, and controls.' },
-      { name: 'Reporting & Insights', href: '/solutions/reporting-insights', desc: 'Management packs, KPI dashboards, and Power BI reporting.' },
+      {
+        name: "All Solutions",
+        href: "/solutions",
+        desc: "Custom finance operational support designed to scale.",
+      },
+      {
+        name: "Accounts Payable",
+        href: "/solutions/accounts-payable",
+        desc: "Controlled supplier invoice processing and approvals.",
+      },
+      {
+        name: "Accounts Receivable",
+        href: "/solutions/accounts-receivable",
+        desc: "Disciplined billing, debtor follow-up, and cash visibility.",
+      },
+      {
+        name: "Process Improvement",
+        href: "/solutions/process-improvement",
+        desc: "Workflow documentation, bottleneck removal, and controls.",
+      },
+      {
+        name: "Reporting & Insights",
+        href: "/solutions/reporting-insights",
+        desc: "Management packs, KPI dashboards, and Power BI reporting.",
+      },
     ],
   },
-  { name: 'How We Work', href: '/how-we-work' },
-  { name: 'About', href: '/about' },
-  { name: 'Insights', href: '/insights' },
-  { name: 'Contact', href: '/contact' },
+  { name: "How We Work", href: "/how-we-work" },
+  { name: "About", href: "/about" },
+  { name: "Insights", href: "/insights" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export const Header: React.FC = () => {
@@ -38,8 +58,8 @@ export const Header: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu on route change
@@ -51,39 +71,42 @@ export const Header: React.FC = () => {
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 lg:px-8 pointer-events-none">
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-2 sm:px-4 pointer-events-none transition-all duration-500">
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1], delay: 0.2 }}
         aria-label="Main Navigation"
         className={cn(
-          'w-full max-w-[1320px] flex items-center justify-between rounded-2xl border transition-all duration-500 pointer-events-auto',
+          "flex items-center justify-between rounded-full border pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
           isScrolled
-            ? 'mt-3 bg-white/97 backdrop-blur-2xl shadow-float border-cloud-grey-border/80 py-3 px-5 lg:px-7'
-            : 'mt-4 lg:mt-5 bg-white/90 backdrop-blur-xl shadow-card border-white/30 py-3.5 px-5 lg:px-8'
+            ? "mt-2.5 sm:mt-3 w-fit max-w-[96vw] bg-white/95 backdrop-blur-2xl shadow-[0_12px_36px_-6px_rgba(11,27,77,0.12),0_4px_16px_-2px_rgba(0,0,0,0.06)] border-cloud-grey-border/90 py-1.5 px-3 sm:px-4 lg:px-5 gap-2 sm:gap-4 lg:gap-6"
+            : "mt-4 lg:mt-5 w-full max-w-[1280px] bg-white/90 backdrop-blur-xl shadow-card border-white/60 py-3 px-5 sm:px-7 lg:px-8 gap-4 sm:gap-6",
         )}
       >
         {/* Logo */}
         <div className="flex items-center shrink-0">
-          <Logo showTagline={!isScrolled} />
+          <Logo size={isScrolled ? "sm" : "md"} showTagline={!isScrolled} />
         </div>
 
         {/* Desktop Navigation — centered */}
-        <div className="hidden xl:flex items-center justify-center gap-0.5">
+        <div className="hidden lg:flex items-center justify-center gap-0.5 xl:gap-1">
           {navLinks.map((item) => {
             const isActive =
-              item.href === '/'
-                ? pathname === '/'
-                : pathname === item.href || (item.submenu && pathname.startsWith(item.href));
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href ||
+                  (item.submenu && pathname.startsWith(item.href));
             const hasSubmenu = !!item.submenu;
 
             return (
@@ -96,28 +119,21 @@ export const Header: React.FC = () => {
                 <Link
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-1 px-3.5 py-2 text-sm font-medium transition-colors relative rounded-xs',
+                    "flex items-center gap-1 px-2.5 sm:px-3 py-1.5 text-xs xl:text-[13px] font-medium transition-all duration-200 relative rounded-full whitespace-nowrap",
                     isActive
-                      ? 'text-rely-navy font-semibold'
-                      : 'text-charcoal hover:text-rely-navy'
+                      ? "text-rely-navy font-semibold"
+                      : "text-charcoal/85 hover:text-rely-navy hover:bg-cloud-grey/60",
                   )}
                 >
                   {item.name}
                   {hasSubmenu && (
                     <ChevronDown
                       className={cn(
-                        'w-3.5 h-3.5 transition-transform duration-200',
-                        activeDropdown === item.name ? 'rotate-180' : ''
+                        "w-3.5 h-3.5 transition-transform duration-200 opacity-60",
+                        activeDropdown === item.name
+                          ? "rotate-180 opacity-100"
+                          : "",
                       )}
-                    />
-                  )}
-
-                  {/* Active gold dot indicator */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="active-nav-dot"
-                      className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-advisory-gold"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
                 </Link>
@@ -127,23 +143,26 @@ export const Header: React.FC = () => {
                   <AnimatePresence>
                     {activeDropdown === item.name && (
                       <motion.div
-                        initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                        initial={{ opacity: 0, y: 10, scale: 0.96 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                        transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="absolute top-full left-0 pt-3 w-[360px]"
+                        exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                        transition={{
+                          duration: 0.2,
+                          ease: [0.25, 0.1, 0.25, 1],
+                        }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[360px]"
                       >
-                        <div className="bg-white/98 backdrop-blur-2xl rounded-xl shadow-float-lg border border-cloud-grey-border overflow-hidden p-2">
+                        <div className="bg-white/98 backdrop-blur-2xl rounded-2xl shadow-float-lg border border-cloud-grey-border overflow-hidden p-2">
                           <div className="grid gap-0.5">
                             {item.submenu?.map((subItem) => (
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
                                 className={cn(
-                                  'block p-3 rounded-lg transition-colors group/sub',
+                                  "block p-3 rounded-xl transition-colors group/sub",
                                   pathname === subItem.href
-                                    ? 'bg-warm-ivory/60'
-                                    : 'hover:bg-cloud-grey/80'
+                                    ? "bg-warm-ivory/60"
+                                    : "hover:bg-cloud-grey/80",
                                 )}
                                 onClick={() => setActiveDropdown(null)}
                               >
@@ -169,36 +188,41 @@ export const Header: React.FC = () => {
           })}
         </div>
 
-        {/* Desktop CTA */}
-        <div className="hidden xl:flex items-center gap-3 shrink-0">
+        {/* Desktop CTA — sleek rounded pill matching reference */}
+        <div className="hidden lg:flex items-center shrink-0">
           <Button
             href="/book-a-review"
             variant="primary"
-            size="md"
-            className="shadow-subtle"
+            size="sm"
+            className={cn(
+              "rounded-full font-heading font-semibold tracking-wider uppercase transition-all duration-300 shadow-subtle hover:shadow-glow-gold whitespace-nowrap",
+              isScrolled
+                ? "text-[11px] px-3.5 sm:px-4 py-1.5"
+                : "text-xs px-5 py-2.5",
+            )}
           >
             Book a Review
           </Button>
         </div>
 
         {/* Mobile buttons */}
-        <div className="flex xl:hidden items-center gap-2">
+        <div className="flex lg:hidden items-center gap-2 shrink-0">
           <Button
             href="/book-a-review"
             variant="primary"
             size="sm"
-            className="text-xs px-3 py-1.5"
+            className="text-[11px] px-3 py-1.5 rounded-full uppercase tracking-wider"
           >
             Book Review
           </Button>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 text-rely-navy hover:bg-cloud-grey rounded-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold"
+            className="p-2 text-rely-navy hover:bg-cloud-grey rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold"
             aria-label="Open Navigation Menu"
             aria-expanded={mobileMenuOpen}
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-5 h-5" />
           </button>
         </div>
       </motion.nav>
@@ -207,10 +231,14 @@ export const Header: React.FC = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
+            initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'tween', duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{
+              type: "tween",
+              duration: 0.4,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
             className="fixed inset-0 z-[60] bg-rely-navy flex flex-col pointer-events-auto"
           >
             {/* Close button */}
@@ -218,7 +246,7 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-white hover:bg-white/10 rounded-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold"
+                className="p-2.5 text-white hover:bg-white/10 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-advisory-gold"
                 aria-label="Close Navigation Menu"
               >
                 <X className="w-7 h-7" />
@@ -232,15 +260,21 @@ export const Header: React.FC = () => {
                   key={item.name}
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 + i * 0.06, duration: 0.4, ease: 'easeOut' }}
+                  transition={{
+                    delay: 0.15 + i * 0.06,
+                    duration: 0.4,
+                    ease: "easeOut",
+                  }}
                   className="flex flex-col"
                 >
                   <Link
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={cn(
-                      'text-2xl sm:text-3xl font-heading font-semibold py-2 transition-colors',
-                      pathname === item.href ? 'text-advisory-gold' : 'text-white hover:text-advisory-gold-light'
+                      "text-2xl sm:text-3xl font-heading font-semibold py-2 transition-colors",
+                      pathname === item.href
+                        ? "text-advisory-gold"
+                        : "text-white hover:text-advisory-gold-light",
                     )}
                   >
                     {item.name}

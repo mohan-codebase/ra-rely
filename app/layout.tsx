@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Montserrat, Inter } from "next/font/google";
+import { Montserrat, Inter, Geist } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
+import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { Preloader } from "@/components/ui/Preloader";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -65,28 +70,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-AU" className={`${montserrat.variable} ${inter.variable}`}>
+    <html lang="en-AU" className={cn(montserrat.variable, inter.variable, "font-sans", geist.variable)}>
       <body className="min-h-screen flex flex-col bg-white text-charcoal antialiased selection:bg-rely-navy selection:text-warm-ivory">
+        {/* Lenis smooth scrolling, wired into GSAP ScrollTrigger */}
+        <SmoothScrollProvider />
+
         {/* Branded Preloader — shows on first session visit */}
         <Preloader />
+
+        {/* Gold scroll progress rail + back-to-top pill */}
+        <ScrollProgress />
 
         {/* WCAG 2.1 AA Skip to Content Link */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-rely-navy focus:text-white focus:outline-none focus:ring-2 focus:ring-advisory-gold rounded-xs shadow-lg font-medium text-sm"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-rely-navy focus:text-white focus:outline-none focus:ring-2 focus:ring-advisory-gold rounded-full shadow-lg font-medium text-sm"
         >
           Skip to main content
         </a>
 
         {/* Global Floating Navigation Header */}
-        <Header />
+        <Nav />
 
         {/* Main Content Area */}
         <main id="main-content" className="flex-grow">
           {children}
         </main>
 
-        {/* Global Floating Footer */}
+        {/* Global Footer */}
         <Footer />
       </body>
     </html>

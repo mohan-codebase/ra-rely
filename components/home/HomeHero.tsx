@@ -1,22 +1,55 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import {
   ArrowRight,
   TrendingUp,
-  ShieldCheck,
+  Check,
   BarChart3,
-  CheckCircle2,
   Clock,
+  Sparkles,
 } from 'lucide-react';
 import Link from 'next/link';
+import { gsap, prefersReducedMotion, useIsoLayoutEffect } from '@/lib/gsap';
+import { StatCounter } from '@/components/ui/StatCounter';
 
 const trustBadges = [
-  { icon: CheckCircle2, text: 'Australian Point of Contact' },
-  { icon: CheckCircle2, text: 'Documented SOPs' },
-  { icon: CheckCircle2, text: 'Seamless Accounting Collaboration' },
+  'Australian point of contact',
+  'Documented SOPs',
+  'Seamless accounting collaboration',
+];
+
+// Headline proof points, shown as a flat rule beneath the banner. Each counts
+// up to `value` once scrolled into view; `prefix`/`suffix` frame the number.
+const heroStats = [
+  { value: 14, suffix: ' days', label: 'Faster average collection' },
+  { value: 5, suffix: 'th day', label: 'Management pack delivery' },
+  { value: 100, suffix: '%', label: 'Invoices matched & verified' },
+  { value: 1, suffix: ' lead', label: 'Australian point of contact' },
+];
+
+// The two headline metrics carried at the top of the control panel.
+const panelMetrics = [
+  {
+    icon: TrendingUp,
+    label: 'Receivables cycle',
+    value: '22 days',
+    note: '14 days collected sooner',
+  },
+  {
+    icon: Clock,
+    label: 'AP processing',
+    value: '100%',
+    note: 'Matched, verified, no duplicates',
+  },
+];
+
+const panelControls: [string, string][] = [
+  ['Approval workflow segregation', 'Active'],
+  ['Debtor statement automation', 'Weekly cycle'],
+  ['Management pack delivery', '5th business day'],
 ];
 
 // Custom stagger container with slower, more cinematic feel
@@ -72,19 +105,20 @@ const ctaVariant = {
   },
 };
 
-// Dashboard panel slides in from right
-const dashboardVariant = {
-  hidden: { opacity: 0, x: 60, scale: 0.95 },
+// Control panel rises in from the right
+const panelVariant = {
+  hidden: { opacity: 0, x: 48, y: 24 },
   visible: {
     opacity: 1,
     x: 0,
-    scale: 1,
-    transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 },
+    y: 0,
+    transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1], delay: 0.35 },
   },
 };
 
 export const HomeHero: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
 
   // If reduced motion, use simpler fade variants
   const getVariant = <T extends Record<string, unknown>>(variant: T): T =>
@@ -95,272 +129,326 @@ export const HomeHero: React.FC = () => {
         } as unknown as T)
       : variant;
 
+  /**
+   * Scroll-linked depth. Each banner layer leaves at its own rate, so the hero
+   * dissolves into the section below instead of scrolling away as one flat
+   * slab. Everything is scrubbed, so it tracks the Lenis easing exactly.
+   */
+  useIsoLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section || prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      const scrollTrigger = {
+        trigger: section,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.8,
+      };
+
+      // Background washes drift slowest — they read as the far distance.
+      gsap.to('[data-hero-bg]', { y: 120, ease: 'none', scrollTrigger });
+
+      // The copy column lifts away and fades as it exits.
+      gsap.to('[data-hero-copy]', {
+        y: -70,
+        opacity: 0.15,
+        ease: 'none',
+        scrollTrigger,
+      });
+
+      // The panel sits nearer the viewer, so it travels furthest.
+      gsap.to('[data-hero-panel]', { y: -130, ease: 'none', scrollTrigger });
+
+      // Stat rail trails just behind the copy.
+      gsap.to('[data-hero-stats]', {
+        y: -40,
+        opacity: 0.2,
+        ease: 'none',
+        scrollTrigger,
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative pt-28 pb-16 lg:pt-36 lg:pb-28 overflow-hidden">
-      {/* Multi-layered background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cloud-grey/60 via-white to-warm-ivory-light/30" />
+    <section
+      ref={sectionRef}
+      className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden"
+    >
+      {/* ---- Layered banner background ---- */}
+      <div data-hero-bg className="absolute inset-0 -z-10 pointer-events-none">
+        {/* Base wash: warm ivory in the top-left, clearing to white at the fold */}
+        <div className="absolute inset-0 bg-[linear-gradient(160deg,#FAF8F3_0%,#FFFFFF_45%,#F4F6F9_100%)]" />
 
-      {/* Architectural grid pattern */}
-      <div className="absolute inset-0 grid-pattern pointer-events-none" />
+        {/* Broad gold field behind the control panel, anchoring the right side */}
+        <div className="absolute -top-32 right-[-18%] w-[54rem] h-[54rem] rounded-full bg-[radial-gradient(circle,rgba(196,163,90,0.18)_0%,rgba(196,163,90,0.05)_45%,transparent_70%)]" />
 
-      {/* Floating decorative orbs */}
-      <motion.div
-        className="absolute top-32 right-[15%] w-72 h-72 rounded-full bg-advisory-gold/5 blur-3xl"
-        animate={
-          shouldReduceMotion
-            ? {}
-            : { y: [0, -15, 0], scale: [1, 1.05, 1] }
-        }
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute bottom-20 left-[10%] w-56 h-56 rounded-full bg-rely-navy/5 blur-3xl"
-        animate={
-          shouldReduceMotion
-            ? {}
-            : { y: [0, 12, 0], scale: [1, 0.95, 1] }
-        }
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-      />
+        {/* Cool navy counterweight low on the left */}
+        <div className="absolute bottom-[-18rem] -left-40 w-[46rem] h-[46rem] rounded-full bg-[radial-gradient(circle,rgba(11,27,77,0.08)_0%,transparent_65%)]" />
+
+        {/* Architectural grid, faded towards the bottom so the next section
+            never meets a hard edge */}
+        <div className="absolute inset-0 grid-pattern [mask-image:linear-gradient(to_bottom,black_5%,transparent_88%)]" />
+
+        {/* Fine gold hairline suggesting a ledger rule */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-advisory-gold/40 to-transparent" />
+
+        {/* Soft white feather into the next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-white" />
+      </div>
 
       <div className="relative max-w-container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={heroStagger}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-12 xl:gap-16 items-center"
         >
-          {/* Left Column: Core Value Proposition */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-            {/* Eyebrow badge — slides from left */}
+          {/* ---------- Left: the proposition ---------- */}
+          <div
+            data-hero-copy
+            className="lg:col-span-7 will-change-transform"
+          >
+            {/* Eyebrow — a rule and a mark, not another bordered chip */}
             <motion.div
               variants={getVariant(eyebrowVariant)}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-lg bg-warm-ivory/80 backdrop-blur-sm border border-advisory-gold/30 text-rely-navy text-xs font-heading font-semibold uppercase tracking-[0.18em] shadow-subtle"
+              className="flex items-center gap-3"
             >
-              <motion.span
-                className="w-2 h-2 rounded-full bg-advisory-gold"
-                animate={
-                  shouldReduceMotion
-                    ? {}
-                    : { scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }
-                }
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              Finance Operations & Business Insight
+              <span className="relative flex h-2 w-2 shrink-0">
+                {!shouldReduceMotion && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-advisory-gold"
+                    animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
+                    transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+                  />
+                )}
+                <span className="relative h-2 w-2 rounded-full bg-advisory-gold" />
+              </span>
+              <span className="font-heading text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-charcoal-muted">
+                Australian finance operations
+                <span className="text-advisory-gold-dark"> &amp; business insight</span>
+              </span>
             </motion.div>
 
-            {/* Gold decorative rule between eyebrow and title */}
-            <motion.div
-              initial={shouldReduceMotion ? { opacity: 0 } : { scaleX: 0, opacity: 0 }}
-              animate={shouldReduceMotion ? { opacity: 1 } : { scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-              className="w-20 h-[2px] bg-gradient-to-r from-advisory-gold to-advisory-gold-light rounded-full origin-left"
-            />
-
-            {/* Main Headline — cinematic reveal */}
+            {/* Main headline — one controlled break, gold on the second line */}
             <motion.h1
               variants={getVariant(titleVariant)}
-              className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-heading font-bold text-rely-navy tracking-tight leading-[1.12] text-balance"
+              className="mt-7 border-l-2 border-advisory-gold pl-6 sm:pl-7 font-heading font-bold text-rely-navy tracking-tight leading-[1.06] text-[2.15rem] sm:text-5xl lg:text-[2.6rem] xl:text-[3.75rem]"
             >
-              Better finance operations.{' '}
-              <span className="relative inline-block">
-                <span className="text-gradient-gold">
-                  Clearer business decisions.
-                </span>
-                {/* Animated underline accent */}
-                <motion.span
-                  className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-advisory-gold to-advisory-gold-light rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: '100%' }}
-                  transition={{ delay: 1.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                />
+              <span className="block">Better finance operations.</span>
+              <span className="block text-advisory-gold-dark">
+                Clearer business decisions.
               </span>
             </motion.h1>
 
-            {/* Lead Paragraph */}
+            {/* Lead paragraph */}
             <motion.p
               variants={getVariant(subtitleVariant)}
-              className="text-base sm:text-lg lg:text-xl text-charcoal/85 leading-relaxed max-w-2xl font-normal"
+              className="mt-7 pl-6 sm:pl-7 text-base sm:text-lg text-charcoal/85 leading-relaxed max-w-xl"
             >
               Rely Advisory Group helps growing Australian businesses improve accounts payable,
               strengthen receivables, streamline finance processes and gain clearer visibility of
               performance, without the cost of building a large internal finance team.
             </motion.p>
 
-            {/* CTAs — with gold glow on hover */}
+            {/* Calls to action */}
             <motion.div
               variants={getVariant(ctaVariant)}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
+              className="mt-9 pl-6 sm:pl-7 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-4"
             >
               <Button
                 href="/book-a-review"
                 variant="primary"
                 size="lg"
-                className="shadow-card hover:shadow-glow-gold transition-shadow duration-300"
+                className="shadow-card hover:shadow-glow-gold"
               >
-                Book a Free Finance Operations Review
+                <Sparkles className="w-4 h-4 text-advisory-gold" />
+                Book a Free Operations Review
               </Button>
-              <Button
-                href="/solutions"
-                variant="secondary"
-                size="lg"
-                className="group"
-              >
+              <Button href="/solutions" variant="secondary" size="lg" className="group">
                 Explore our solutions
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1.5 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </motion.div>
 
-            {/* Trust highlights — staggered cascade */}
-            <motion.div
+            {/* Trust line — plain text with gold ticks, no chrome */}
+            <motion.ul
               variants={getVariant(subtitleVariant)}
-              className="pt-6 border-t border-cloud-grey-border flex flex-wrap items-center gap-y-3 gap-x-6 text-xs sm:text-sm text-charcoal-muted"
+              className="mt-9 pl-6 sm:pl-7 flex flex-wrap items-center gap-x-5 gap-y-2.5"
             >
               {trustBadges.map((badge, i) => (
-                <motion.div
-                  key={badge.text}
-                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: -10 }}
-                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }}
-                  transition={{ delay: 1.6 + i * 0.15, duration: 0.4 }}
-                  className="flex items-center gap-1.5 font-medium"
+                <motion.li
+                  key={badge}
+                  initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  transition={{ delay: 1.5 + i * 0.12, duration: 0.4 }}
+                  className="inline-flex items-center gap-2 text-xs sm:text-[13px] text-charcoal-muted"
                 >
-                  <badge.icon className="w-4 h-4 text-advisory-gold shrink-0" />
-                  <span>{badge.text}</span>
-                </motion.div>
+                  <Check className="w-3.5 h-3.5 text-advisory-gold shrink-0" strokeWidth={3} />
+                  {badge}
+                </motion.li>
               ))}
-            </motion.div>
+            </motion.ul>
           </div>
 
-          {/* Right Column: Finance Dashboard Visual */}
-          <motion.div
-            variants={getVariant(dashboardVariant)}
-            className="lg:col-span-5 relative"
-          >
-            {/* Floating background accents */}
-            <div className="absolute -inset-4 bg-gradient-to-br from-advisory-gold/5 to-rely-navy/5 rounded-2xl blur-xl" />
+          {/* ---------- Right: the control panel ---------- */}
+          {/* The GSAP parallax and the Framer entrance both write `transform`,
+              so they get one element each — sharing one leaves the panel stuck
+              at whichever offset lost the race. */}
+          <div data-hero-panel className="lg:col-span-5 relative will-change-transform">
+            {/* Warm halo lifting the panel off the page */}
+            <div className="absolute -inset-6 rounded-[2rem] bg-advisory-gold/10 blur-2xl" />
+
+            {/* The plain wrapper above breaks Framer's variant propagation, so
+                this panel drives its own entrance rather than inheriting one. */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={getVariant(panelVariant)}
+              className="relative"
+            >
 
             <motion.div
-              className="relative mx-auto max-w-md lg:max-w-none bg-white rounded-xl border border-cloud-grey-border/80 p-6 sm:p-7 shadow-float space-y-5"
-              whileHover={shouldReduceMotion ? {} : { y: -4, transition: { duration: 0.3 } }}
+              className="relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(155deg,#132766_0%,#0B1B4D_55%,#071233_100%)] shadow-float-lg"
+              whileHover={shouldReduceMotion ? {} : { y: -6, transition: { duration: 0.35 } }}
             >
-              {/* Dashboard Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-cloud-grey-border">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-rely-navy flex items-center justify-center text-advisory-gold font-bold text-xs shadow-subtle">
-                    R
-                  </div>
-                  <div>
-                    <div className="font-heading font-bold text-xs uppercase tracking-wider text-rely-navy">
-                      Finance Operations Dashboard
+              {/* Faint gold grid + top hairline give the panel its ledger feel */}
+              <div className="absolute inset-0 grid-pattern-gold opacity-70 pointer-events-none" />
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-advisory-gold/70 to-transparent" />
+
+              <div className="relative">
+                {/* Panel header */}
+                <div className="flex items-center justify-between gap-4 px-6 sm:px-8 py-6 border-b border-white/10">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-full border border-advisory-gold/50 bg-white/5 flex items-center justify-center font-heading font-bold text-advisory-gold">
+                      R
                     </div>
-                    <div className="text-[11px] text-charcoal-muted">
-                      Rely Advisory Group • Live Overview
+                    <div>
+                      <div className="font-heading text-[13px] font-semibold tracking-wide text-white">
+                        Finance operations, under control
+                      </div>
+                      <div className="text-[11px] text-white/60 mt-0.5">
+                        Rely Advisory Group • live overview
+                      </div>
                     </div>
                   </div>
-                </div>
-                <motion.span
-                  className="inline-flex items-center gap-1.5 text-[10px] font-mono px-2.5 py-1 rounded-lg bg-green-50 text-green-700 border border-green-200"
-                  animate={shouldReduceMotion ? {} : { opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-600" />
-                  Active Control
-                </motion.span>
-              </div>
-
-              {/* Metric Cards */}
-              <div className="grid grid-cols-2 gap-3">
-                <motion.div
-                  className="p-4 bg-cloud-grey/80 rounded-lg border border-cloud-grey-border/60"
-                  whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="text-[11px] font-medium text-charcoal-muted flex items-center gap-1.5">
-                    <TrendingUp className="w-3.5 h-3.5 text-advisory-gold" /> Receivables Cycle
-                  </div>
-                  <div className="font-heading font-bold text-2xl text-rely-navy mt-1.5">
-                    22 Days
-                  </div>
-                  <div className="text-[10px] text-green-600 font-semibold mt-1">
-                    ↓ 14 days collected sooner
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  className="p-4 bg-cloud-grey/80 rounded-lg border border-cloud-grey-border/60"
-                  whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="text-[11px] font-medium text-charcoal-muted flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-advisory-gold" /> AP Processing
-                  </div>
-                  <div className="font-heading font-bold text-2xl text-rely-navy mt-1.5">
-                    100% Verified
-                  </div>
-                  <div className="text-[10px] text-charcoal-muted font-medium mt-1">
-                    No duplicate payments
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Control Health Panel */}
-              <motion.div
-                className="p-4 bg-warm-ivory/80 rounded-lg border border-advisory-gold/30 space-y-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
-                <div className="flex items-center justify-between text-xs font-heading font-bold text-rely-navy">
-                  <span className="flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-advisory-gold" />
-                    Standard Operating Controls
+                  <span className="hidden sm:inline-flex items-center gap-2 rounded-full border border-advisory-gold/25 bg-advisory-gold/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-advisory-gold-light">
+                    <motion.span
+                      className="w-1.5 h-1.5 rounded-full bg-advisory-gold"
+                      animate={shouldReduceMotion ? {} : { opacity: [0.35, 1, 0.35] }}
+                      transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                    Active
                   </span>
-                  <span className="text-advisory-gold-dark font-mono text-[11px]">Disciplined</span>
                 </div>
-                <div className="space-y-2 text-xs text-charcoal">
-                  {[
-                    ['Approval Workflow Segregation', 'Active'],
-                    ['Debtor Statement Automation', 'Weekly Cycle'],
-                    ['Management Pack Delivery', '5th Business Day'],
-                  ].map(([label, status]) => (
-                    <div key={label} className="flex justify-between items-center py-1 border-b border-advisory-gold/15 last:border-b-0">
-                      <span>{label}</span>
-                      <span className="text-xs font-semibold text-rely-navy">{status}</span>
+
+                {/* Headline metrics — separated by hairlines, not nested cards */}
+                <div className="grid grid-cols-2 border-b border-white/10">
+                  {panelMetrics.map((metric, i) => (
+                    <div
+                      key={metric.label}
+                      className={`px-6 sm:px-8 py-7 ${
+                        i > 0 ? 'border-l border-white/10' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.16em] text-white/60">
+                        <metric.icon className="w-3.5 h-3.5 text-advisory-gold" />
+                        {metric.label}
+                      </div>
+                      <div className="mt-2.5 font-heading font-bold text-3xl sm:text-[2.15rem] leading-none text-white">
+                        {metric.value}
+                      </div>
+                      <div className="mt-2 text-[11px] leading-snug text-advisory-gold-light/80">
+                        {metric.note}
+                      </div>
                     </div>
                   ))}
                 </div>
-              </motion.div>
 
-              {/* Bottom Power BI Link */}
-              <div className="p-3.5 bg-white rounded-lg border border-cloud-grey-border flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-rely-navy text-white flex items-center justify-center shrink-0 shadow-subtle">
-                    <BarChart3 className="w-4 h-4 text-advisory-gold" />
+                {/* Operating controls */}
+                <div className="px-6 sm:px-8 py-7">
+                  <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/60">
+                    Standard operating controls
                   </div>
-                  <div>
-                    <div className="font-semibold text-rely-navy text-xs">
-                      Decision-Focused Reporting
-                    </div>
-                    <div className="text-[10px] text-charcoal-muted">
-                      Data → Insight → Recommendation
-                    </div>
-                  </div>
+                  <ul className="mt-4 space-y-3.5">
+                    {panelControls.map(([label, status]) => (
+                      <li
+                        key={label}
+                        className="flex items-center justify-between gap-4 text-sm"
+                      >
+                        <span className="flex items-center gap-2.5 text-white/80">
+                          <Check
+                            className="w-3.5 h-3.5 text-advisory-gold shrink-0"
+                            strokeWidth={3}
+                          />
+                          {label}
+                        </span>
+                        <span className="shrink-0 text-xs font-medium text-advisory-gold-light">
+                          {status}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <Link
-                  href="/solutions/reporting-insights"
-                  className="text-xs font-semibold text-advisory-gold-dark hover:text-rely-navy transition-colors"
-                >
-                  View Sample →
-                </Link>
-              </div>
 
-              {/* Trust note */}
-              <div className="text-center pt-1 text-[11px] text-charcoal-muted">
-                Australian relationship management • Secure delivery
+                {/* Reporting strip */}
+                <div className="flex items-center justify-between gap-4 px-6 sm:px-8 py-5 border-t border-white/10 bg-white/[0.04]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-advisory-gold/15 border border-advisory-gold/25 flex items-center justify-center shrink-0">
+                      <BarChart3 className="w-4 h-4 text-advisory-gold" />
+                    </div>
+                    <div>
+                      <div className="text-[13px] font-semibold text-white">
+                        Decision-focused reporting
+                      </div>
+                      <div className="text-[11px] text-white/60">
+                        Data → insight → recommendation
+                      </div>
+                    </div>
+                  </div>
+                  <Link
+                    href="/solutions/reporting-insights"
+                    className="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-1.5 text-[11px] font-semibold text-white/85 transition-colors hover:bg-advisory-gold hover:border-advisory-gold hover:text-rely-navy"
+                  >
+                    Sample
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+            </motion.div>
+          </div>
         </motion.div>
+
+        {/* ---- Proof rail: a flat ledger rule bridging into the page ---- */}
+        <div
+          data-hero-stats
+          className="mt-16 lg:mt-24 pt-9 border-t border-cloud-grey-border will-change-transform"
+        >
+          <motion.dl
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }} className="grid grid-cols-2 lg:grid-cols-4 gap-y-8">
+            {heroStats.map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`px-1 sm:px-6 ${
+                  i > 0 ? 'lg:border-l lg:border-cloud-grey-border' : ''
+                } ${i % 2 === 1 ? 'border-l border-cloud-grey-border pl-5 lg:pl-6' : ''}`}
+              >
+                <dt className="sr-only">{stat.label}</dt>
+                <dd className="font-heading font-bold text-2xl sm:text-3xl text-rely-navy tabular-nums">
+                  <StatCounter value={stat.value} suffix={stat.suffix} />
+                </dd>
+                <span className="block text-xs sm:text-[13px] text-charcoal-muted mt-1.5 leading-snug">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </motion.dl>
+        </div>
       </div>
     </section>
   );

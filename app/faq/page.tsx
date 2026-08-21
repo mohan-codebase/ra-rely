@@ -51,7 +51,7 @@ export default function FAQPage() {
 
         <div className="space-y-6 max-w-3xl my-12">
           {faqs.map((item, idx) => (
-            <div key={idx} className="bg-white border border-cloud-grey-border p-6 rounded-xs">
+            <div key={idx} className="bg-white border border-cloud-grey-border p-6 rounded-2xl">
               <h3 className="font-heading font-bold text-base sm:text-lg text-rely-navy mb-2">
                 {item.q}
               </h3>

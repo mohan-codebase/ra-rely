@@ -22,7 +22,7 @@ export default function TermsPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
 
-        <div className="p-4 bg-amber-50 border border-amber-300 rounded-xs flex items-start gap-3 text-xs text-amber-900">
+        <div className="p-4 bg-amber-50 border border-amber-300 rounded-2xl flex items-start gap-3 text-xs text-amber-900">
           <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
           <div>
             <strong>Notice:</strong> Legal draft for review — must be reviewed by legal counsel before publication.

@@ -21,7 +21,7 @@ export default function AccountsReceivablePage() {
       <section className="py-16 sm:py-20 bg-white">
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="p-8 bg-warm-ivory border border-advisory-gold/30 rounded-xs mb-12">
+        <div className="p-8 bg-warm-ivory border border-advisory-gold/30 rounded-2xl mb-12">
           <h2 className="text-lg font-heading font-bold text-rely-navy mb-2">A professional approach to collection</h2>
           <p className="text-sm text-charcoal leading-relaxed">
             Rely is not positioned as a debt collection agency. Communications are courteous, consistent and aligned with the client&apos;s customer relationships. Formal debt recovery and legal escalation remain with appropriately qualified providers.

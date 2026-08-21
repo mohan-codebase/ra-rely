@@ -25,28 +25,28 @@ export default function HowWeWorkPage() {
 
         {/* 4 Stages */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-12">
-          <div className="bg-white p-6 rounded-xs border border-cloud-grey-border">
+          <div className="bg-white p-6 rounded-2xl border border-cloud-grey-border">
             <span className="text-advisory-gold font-mono font-bold text-sm block mb-1">STAGE 01</span>
             <h3 className="text-lg font-heading font-bold text-rely-navy mb-2">1. Discover</h3>
             <p className="text-xs text-charcoal-muted leading-relaxed">
               Understand systems, volumes, stakeholders, current pain points, and provider boundaries.
             </p>
           </div>
-          <div className="bg-white p-6 rounded-xs border border-cloud-grey-border">
+          <div className="bg-white p-6 rounded-2xl border border-cloud-grey-border">
             <span className="text-advisory-gold font-mono font-bold text-sm block mb-1">STAGE 02</span>
             <h3 className="text-lg font-heading font-bold text-rely-navy mb-2">2. Design</h3>
             <p className="text-xs text-charcoal-muted leading-relaxed">
               Define service scope, timetable, workflows, approval thresholds, and security requirements.
             </p>
           </div>
-          <div className="bg-white p-6 rounded-xs border border-cloud-grey-border">
+          <div className="bg-white p-6 rounded-2xl border border-cloud-grey-border">
             <span className="text-advisory-gold font-mono font-bold text-sm block mb-1">STAGE 03</span>
             <h3 className="text-lg font-heading font-bold text-rely-navy mb-2">3. Transition</h3>
             <p className="text-xs text-charcoal-muted leading-relaxed">
               Controlled knowledge transfer, system setup, and pilot testing to resolve gaps.
             </p>
           </div>
-          <div className="bg-white p-6 rounded-xs border border-cloud-grey-border">
+          <div className="bg-white p-6 rounded-2xl border border-cloud-grey-border">
             <span className="text-advisory-gold font-mono font-bold text-sm block mb-1">STAGE 04</span>
             <h3 className="text-lg font-heading font-bold text-rely-navy mb-2">4. Deliver & Improve</h3>
             <p className="text-xs text-charcoal-muted leading-relaxed">

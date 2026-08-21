@@ -23,7 +23,7 @@ export default function PrivacyPage() {
 
 
         {/* Legal draft review banner */}
-        <div className="p-4 bg-amber-50 border border-amber-300 rounded-xs flex items-start gap-3 text-xs text-amber-900">
+        <div className="p-4 bg-amber-50 border border-amber-300 rounded-2xl flex items-start gap-3 text-xs text-amber-900">
           <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
           <div>
             <strong>Notice:</strong> Legal draft for review — must be reviewed against final business structure, systems, service model and applicable Australian law before publication.
